@@ -1,0 +1,19 @@
+{
+  "name": "beat-ballot",
+  "version": "1.0.0",
+  "description": "Beat Ballot: A spotify-linked web-app that allows users to vote for the next song.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BaumAppState/Beat-Ballot.git"
+  },
+  "author": "Payton Baum",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BaumAppState/Beat-Ballot/issues"
+  },
+  "homepage": "https://github.com/BaumAppState/Beat-Ballot#readme"
+}

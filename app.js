@@ -1,25 +1,56 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://baumpayton:RaptureShrugged@cluster0.vxvatnl.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const querystring = require('querystring');
+const express = require('express');
+const app = express();
+const port = 8888;
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    serverApi: {
-      version: ServerApiVersion.v1,
-      strict: true,
-      deprecationErrors: true,
-    }
+const redirect_uri = "http://localhost:8888"
+const client_id = "c1a7dda8473e4e8d8932ed88c9371e73";
+const client_secret = "cbba7bbb553f491a8c0fcfdbbe8d66f5";
+
+let stateString = '';
+
+app.get('/login', (req, res) => {
+    stateString = generateRandomString(16);
+    let scope = 'user-read-private user-read-email';
+
+    res.redirect('http://accounts.spotify.com/authorize?' +
+      querystring.stringify({
+        response_type: 'code',
+        client_id: client_id,
+        scope: scope,
+        redirect_uri: redirect_uri + '/logincallback',
+        state: stateString
+      }));
 });
 
-async function run() {
-    try {
-        // Connect the client to the server	(optional starting in v4.7)
-        await client.connect();
-        // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    } finally {
-        // Ensures that the client will close when you finish/error
-        await client.close();
+app.get('/logincallback', (req, res) => {
+    if(req.query.error) {
+        let errorMessage = req.query.error || 'Authentication error';
+        res.status(403).send(errorMessage);
+        return;
     }
+    if(stateString !== req.query.state) {
+        res.status(403).send('Invalid state');
+        return;
+    }
+
+    res.send('Authentication successful');
+});
+
+function generateRandomString(length) {
+    let chars = '0123456789' +
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+      'abcdefghijklmnopqrstuvwxyz';
+    let result = '';
+
+    for(let i = 0 ; i < length ; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    return result;
 }
-run().catch(console.dir);
+
+app.listen(port, () => {
+    console.log(`Express app listening at http://localhost:${port}`);
+});
+

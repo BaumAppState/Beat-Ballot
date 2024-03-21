@@ -1,7 +1,7 @@
 {
   "name": "beat-ballot",
   "version": "1.0.0",
-  "description": "Beat Ballot: A spotify-linked web-app that allows users to vote for the next song.",
+  "description": "Beat Ballot: A Spotify-linked web-app that allows users to vote for the next song.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/BaumAppState/Beat-Ballot/issues"
   },
-  "homepage": "https://github.com/BaumAppState/Beat-Ballot#readme"
+  "homepage": "https://github.com/BaumAppState/Beat-Ballot#readme",
+  "dependencies": {
+    "express": "^4.19.1"
+  }
 }
